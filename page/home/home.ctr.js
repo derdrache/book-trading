@@ -1,6 +1,6 @@
-app.controller('homeController', function($scope, $http, $cookies, $route) {
+app.controller('homeController', function($scope, $http, $cookies, $route, $location) {
     
-    $scope.test = "hello"
+
     
     
 })
