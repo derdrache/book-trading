@@ -1,0 +1,26 @@
+<div id="headerBackground">
+    <div id="header" class="clearfix">
+        <div class="headerLeft headerLogo">Underground Books</div>
+        <div class="headerLeft headerAuswahl" ng-click="path('/userHome')">Home</div>
+        
+        <div class="headerRight headerAuswahl" ng-click="logout()">Logout</div>
+        <div class="headerRight userSetting" ng-click="path('/setting')"><img src="/Bilder/settings.png"></div>
+        <div class="headerRight">Hi {{userName}}</div>
+    </div>
+</div>
+
+<div id="banner">
+    <div class="userHomeInhalt">
+        
+        <div id="userHomeButtonBox" class="clearfix">
+            <button class="userHomeButtonAnfragen">Deine Tauschanfragen (0 offen)</button>
+            <button class="userHomeButtonAnfragen">Tauschanfragen an dich (0 offen)</button>
+        </div>
+        <img class="userHomeBild" src="/Bilder/agenda.png"/>
+        
+        <div id="userHomeButtonBox">    
+            <div class="userHomeButton"><h3>Buch hinzufügen</h3></div>
+            <div class="userHomeButton"><h3>Alle Bücher anzeigen</h3></div>
+        </div>
+    </div>
+</div>

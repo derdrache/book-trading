@@ -12,7 +12,9 @@
     <h1>Login</h1>
     <br>
     <p>Name: </p>
-    <input class="form-control">
+    <input class="form-control" ng-model="login.name" ng-keypress="submit(login,$event)">
     <p>Password: </p>
-    <input class="form-control">
+    <input class="form-control" ng-model="login.password" ng-keypress="submit(login,$event)">
+    <button ng-click="submit(login)">Login</button>
+    <div class="loginError">{{errorMessage}}</div>
 </div>

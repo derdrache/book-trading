@@ -34,6 +34,7 @@ input{
 }
 
 .headerLogo{
+    float: left;
     width: 200px;
     font-size: 20px;
 }
@@ -75,6 +76,13 @@ input{
     background-color: lightgrey;
 }
 
+.signUpError,
+.loginError{
+    color: red;
+    margin-top: 1%;
+}
+
+
 
 /* Login */
 
@@ -86,4 +94,96 @@ input{
 
 .headerLoginAuswahl{
     background-color: lightgrey;
+}
+
+/* userHome */
+
+.userSetting{
+    cursor: pointer;
+    padding-top: 20px;
+}
+
+.userSetting:hover{
+    animation: turner 4s infinite;
+}
+
+@keyframes turner{
+    from{ transform: rotate(0deg)}
+    to {transform: rotate(720deg)}
+}
+
+.userHomeInhalt{
+    width: 60%;
+    margin-left: 20%;
+    
+}
+
+#userHomeButtonBox{
+    margin-left: 15%;
+    padding-top: 2%;
+}
+
+.userHomeButtonAnfragen{
+    float:left;
+    margin-left: 10%;
+    margin-bottom: 1%;
+}
+
+.userHomeBild{
+    margin-left: 43%;
+}
+
+.userHomeButton{
+    
+    margin-left: 10%;
+    float:left;
+    text-align:center;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    width: 250px;
+    border: 2px solid black;
+    border-radius: 15px;
+    height: 70px;
+    box-shadow:0px 15px 10px black;
+}
+
+.userHomeButton:hover{
+    transform: translateY(5px);
+    box-shadow: 0px 10px 5px black;
+}
+
+.userHomeButton:active{
+    transform: translateY(15px);
+    box-shadow: 0px 0px 5px black;
+}
+
+/* setting */
+
+#settingOptionBox{
+    margin-left: 15%;
+}
+
+
+
+
+
+@media all and (max-width: 500px){
+    
+    #header{
+        width: 100%;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+    
+    .headerLeft,
+    .headerRight{
+        width: 70px;
+    }
+    
+    .headerLogo{
+        width: 200px;
+    }
+    
+
 }

@@ -16,5 +16,12 @@ app.config(function($routeProvider){
         templateUrl: "/login/login.html",
         controller: "loginController"
     })
-    
+    .when("/userHome", {
+        templateUrl: "/userHome/userHome.html",
+        controller: "userHomeController"
+    })
+    .when("/setting", {
+        templateUrl: "/setting/setting.html",
+        controller: "settingController"
+    })
 });

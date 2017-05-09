@@ -1,0 +1,30 @@
+<div id="headerBackground">
+    <div id="header" class="clearfix">
+        <div class="headerLeft headerLogo">Underground Books</div>
+        <div class="headerLeft headerAuswahl" ng-click="path('/userHome')">Home</div>
+        
+        <div class="headerRight headerAuswahl" ng-click="logout()">Logout</div>
+        <div class="headerRight userSetting" ng-click="path('/setting')"><img src="/Bilder/settings.png"></div>
+        <div class="headerRight">Hi {{userName}}</div>
+    </div>
+</div>
+
+<div id="settingOptionBox">
+    <h1>Profil aktualisieren</h1>
+    <p>Vollständiger Name</p>
+    <input class="form-control"/>
+    <p>Stadt</p>
+    <input class="form-control"/>
+    <p>Bundesland</p>
+    <input class="form-control"/>
+    <button>Save</button>
+    
+    <h1>Passwort ändern</h1>
+    <p>altes Passwort</p>
+    <input class="form-control"/>
+    <p>neues Passwort</p>
+    <input class="form-control"/>
+    <p>neues Passwort wiederholen</p>
+    <input class="form-control"/>
+    <button>Save</button>
+</div>

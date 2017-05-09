@@ -12,10 +12,11 @@
     <h1>Sign up</h1>
     <br>
     <p>Name: </p>
-    <input class="form-control">
+    <input type="text" class="form-control" ng-model="newUser.name" ng-keypress="submit(newUser,$event)">
     <p>E-Mail: </p>
-    <input class="form-control">
+    <input type="email" class="form-control" ng-model="newUser.email" ng-keypress="submit(newUser,$event)">
     <p>Password:</p>
-    <input class="form-control">
-    
+    <input type="password" class="form-control" ng-model="newUser.password" ng-keypress="submit(newUser,$event)">
+    <button ng-click="submit(newUser)" >Save</button>
+    <div class="signUpError">{{errorMessage}}</div>
 </div>
