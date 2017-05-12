@@ -6,7 +6,7 @@ app.controller('loginController', function($scope, $http, $cookies, $route, $loc
               if (res !== true){
                   $scope.errorMessage = res;
               } else{
-                  $cookies.put("user", data.name);
+                  $cookies.put("user", data.name.toLocaleLowerCase());
                   $location.path("/userHome");
               }
           });

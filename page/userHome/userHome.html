@@ -13,14 +13,50 @@
     <div class="userHomeInhalt">
         
         <div id="userHomeButtonBox" class="clearfix">
-            <button class="userHomeButtonAnfragen">Deine Tauschanfragen (0 offen)</button>
-            <button class="userHomeButtonAnfragen">Tauschanfragen an dich (0 offen)</button>
+            <button class="userHomeButtonAnfragen" ng-click="path('/anfragen')">
+                Tauschanfragen ({{myRequest|| 0}} von dir / {{otherRequest|| 0}} an dich)
+            </button>
         </div>
         <img class="userHomeBild" src="/Bilder/agenda.png"/>
         
         <div id="userHomeButtonBox">    
-            <div class="userHomeButton"><h3>Buch hinzufügen</h3></div>
-            <div class="userHomeButton"><h3>Alle Bücher anzeigen</h3></div>
+            <div class="userHomeButton" ng-click="myBooksOpen()"><h3>Meine Bücher</h3></div>
+            <div class="userHomeButton" ng-click="allBooksOpen()"><h3>Alle Bücher anzeigen</h3></div>
         </div>
+    </div>
+</div>
+
+<div id="userHomeBookShow" class="clearfix" ng-show="myBooks">
+    <h1>Meine Bücher</h1>
+    
+    <div class="userHomeRow">
+        <div class="col-md-8">
+            <div ng-repeat="book in allMyBooks">
+                <div class="myBooksShow">
+                    <img src="{{book.url}}"/>
+                    <span ng-click="bookSearchDelete(book.name)">Entfernen</span> 
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <input class="form-control newBookInput" placeholder="neues Buch" ng-model="newBook" ng-keypress="newBookAdd(newBook,$event)"/>
+            <button class="btn-primary newBookButton" ng-click="newBookAdd(newBook)">Add</button>
+            <div class="myBooksShow" ng-show="buchSuche">
+                <img src="{{neuesBuchUrl}}"/>
+                <span ng-click="bookSearchDelete(lastAddName)">Entfernen</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="userHomeBookShow" ng-show="allBooks">
+    <div ng-repeat="book in allBooksShow">
+        <div class="myBooksShow">
+            <img src="{{book.url}}"/>
+            <span ng-show="usersBooks(book.user)"style="color: blue" ng-click="tradeRequest(book.user, book.name)">tauschen</span>
+        </div>
+        
     </div>
 </div>

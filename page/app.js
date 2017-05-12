@@ -24,4 +24,8 @@ app.config(function($routeProvider){
         templateUrl: "/setting/setting.html",
         controller: "settingController"
     })
+    .when("/anfragen", {
+        templateUrl: "/anfragen/anfragen.html",
+        controller: "anfragenController"
+    })
 });

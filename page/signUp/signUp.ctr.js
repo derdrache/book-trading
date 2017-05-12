@@ -10,7 +10,7 @@ app.controller('signUpController', function($scope, $http, $cookies, $route, $lo
                     if (res != true){
                         $scope.errorMessage = res;
                     } else{
-                        $cookies.put("user", daten.name);
+                        $cookies.put("user", daten.name.toLocaleLowerCase());
                         $location.path("/userHome");
                     }
                 });

@@ -12,19 +12,21 @@
 <div id="settingOptionBox">
     <h1>Profil aktualisieren</h1>
     <p>Vollständiger Name</p>
-    <input class="form-control"/>
+    <input class="form-control" ng-model="profil.name" ng-keypress="profilUpdate(profil,$event)"/>
     <p>Stadt</p>
-    <input class="form-control"/>
+    <input class="form-control" ng-model="profil.stadt" ng-keypress="profilUpdate(profil,$event)"/>
     <p>Bundesland</p>
-    <input class="form-control"/>
-    <button>Save</button>
+    <input class="form-control" ng-model="profil.bundesland" ng-keypress="profilUpdate(profil,$event)"/>
+    <button ng-click="profilUpdate(profil)">Save</button>
+    <p>{{profilChange}}</p>
     
     <h1>Passwort ändern</h1>
     <p>altes Passwort</p>
-    <input class="form-control"/>
+    <input class="form-control" type="password" ng-model="password.old" ng-keypress="passwordChange(password, $event)"/>
     <p>neues Passwort</p>
-    <input class="form-control"/>
+    <input class="form-control" type="password" ng-model="password.new" ng-keypress="passwordChange(password, $event)"/>
     <p>neues Passwort wiederholen</p>
-    <input class="form-control"/>
-    <button>Save</button>
+    <input class="form-control" type="password" ng-model="password.newAgain" ng-keypress="passwordChange(password, $event)"/>
+    <button ng-click="passwordChange(password)">Save</button>
+    <p >{{errorMessage}}</p>
 </div>

@@ -1,0 +1,38 @@
+<div id="headerBackground">
+    <div id="header" class="clearfix">
+        <div class="headerLeft headerLogo">Underground Books</div>
+        <div class="headerLeft headerAuswahl" ng-click="path('/userHome')">Home</div>
+        
+        <div class="headerRight headerAuswahl" ng-click="logout()">Logout</div>
+        <div class="headerRight userSetting" ng-click="path('/setting')"><img src="/Bilder/settings.png"></div>
+        <div class="headerRight">Hi {{userName}}</div>
+    </div>
+</div>
+
+<div id="anfragenBox">
+    <div class="col-md-6">
+        <h1>Eigene Anfragen</h1>
+        
+        <div ng-repeat="anfrage in ownAnfragen">
+            <div class="anfrage">
+               <p>Buch: {{anfrage.book}}</p>
+               <button class="anfrageButton" ng-click="AnfrageEntscheidung({ownAnfrage: anfrage})">löschen</button>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="col-md-6">
+        <h1>Anfragen an dich</h1>
+        
+    <div ng-repeat="anfrage in otherAnfragen">
+            <div class="anfrage">
+               <p>Buch: {{anfrage.book}}</p>
+               <button class="anfrageButton" ng-click="AnfrageEntscheidung({accept: anfrage})">annehmen</button>
+               <button class="anfrageButton" ng-click="AnfrageEntscheidung({otherAnfrage: anfrage})">ablehnen</button>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>

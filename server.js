@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 8080|| 5000;
 const mongoClient = require("mongodb").MongoClient;
 const dburl = "mongodb://webapps:webapps@ds157500.mlab.com:57500/webapps";
+const bing = require("node-bing-api")({ accKey: "1fc3f4c636b44449be7232e39f24e679" });
 
 
 const server = express()
@@ -44,6 +45,7 @@ server.post("/signUp", function(req,res){
     });
 });
 
+
 /* Login */
 server.post("/login", function(req,res){
     mongoClient.connect(dburl, function(err,db){
@@ -65,7 +67,216 @@ server.post("/login", function(req,res){
 });
 
 
+/* Setting */
+server.post("/setting", function(req,res){
+    mongoClient.connect(dburl, function(err, db){
+        if (err) throw err;
+        
+        /* Profil aktualisieren */        
+        if (req.body.profil){
+            if(req.body.profil.name){
+                db.collection("userdata").update(
+                {"user" : req.body.profil.user},
+                {
+                    $set: {
+                        "fullName" : req.body.profil.name,
+                    }
+                }
+                );
+            }
+            if (req.body.profil.stadt){
+                db.collection("userdata").update(
+                {"user" : req.body.profil.user},
+                {
+                    $set: {
+                        "stadt" : req.body.profil.stadt,
+                    }
+                }
+                );
+            }
+            if (req.body.profil.bundesland){
+                db.collection("userdata").update(
+                {"user" : req.body.profil.user},
+                {
+                    $set: {
+                        "bundesland" : req.body.profil.bundesland,
+                    }
+                }
+                );               
+            }
+        res.send("erfolgreich");
+        db.close();
+        }
+        
+        /* Passwort prüfen und ändern */
+        if (req.body.password){
+            db.collection("userdata").find({"user": req.body.password.user}).toArray(function(err,result){
+                if (err) throw err;
+                
+                if (result[0].password !== req.body.password.old){
+                    res.send("Altes Passwort ist falsch");
+                }else{
+                    db.collection("userdata").update(
+                    {"user": req.body.password.user},
+                    {
+                        $set: {
+                            "password": req.body.password.new
+                        }
+                    }
+                    );
+                res.send("erfolgreich");    
+                }
+            db.close();     
+            });
+        }
+    });
+});
 
 
+
+/* UserHome - Chaos....*/
+server.post("/userHome", function(req,res){
+    /* Meine Bücher - hinzufügen*/
+    if (req.body.suche){
+        bing.images(req.body.suche, {
+            top: 1,  
+            }, function (err,puffer,data){
+                    mongoClient.connect(dburl,function(err,db){
+                        if (err) throw err;
+                        
+                        db.collection("userdata").update(
+                        {"user" : req.body.user},
+                        {
+                            $push:{
+                                "books" : {name:req.body.suche, url:data.value[0].thumbnailUrl}
+                            }
+                        }
+                        )
+                    db.close();    
+                    })
+                res.send(data.value[0].thumbnailUrl);
+            });
+    }
+    /* gesuchtes Buch wieder entfernen */
+    if (req.body.entfernen){
+        
+        mongoClient.connect(dburl,function(err,db){
+            if (err) throw err;
+
+            db.collection("userdata").update(
+            {"user": req.body.user},
+            {
+                $pull:{
+                    "books" : {name:req.body.entfernen}
+                }
+            }
+            );
+            
+        db.close();    
+        });
+    res.send("good")    
+    }
+    /* alle eignen Bücher zeigen*/
+    if(req.body.show){
+        mongoClient.connect(dburl, function(err, db) {
+            if (err) throw err;
+            
+            db.collection("userdata").find({user:req.body.user}).toArray(function(err,result){
+                if (err) throw err;
+                
+                res.send(result[0])    
+            });
+        db.close();    
+        });
+    }
+    /* Handel Anfrage */
+    if (req.body.from){
+        mongoClient.connect(dburl, function(err,db){
+            if (err) throw err;
+            console.log(req.body)
+            
+            db.collection("userdata").update(
+            {"user": req.body.from},
+            {
+                $push:{
+                    ownTradeRequest: {book: req.body.book, bookUser: req.body.to}
+                }
+            }
+            )
+            
+            db.collection("userdata").update(
+            {"user": req.body.to},
+            {
+                $push:{
+                    otherTradeRequest: {book: req.body.book, from: req.body.from}
+                }
+            }
+            )
+            
+            db.collection("userdata").find({"user": req.body.from}).toArray(function(err,result){
+                if (err) throw err;
+                
+              res.send(result[0].ownTradeRequest);   
+            });
+           
+        db.close();    
+        });
+    }
+});
+
+/* alle Bücher zeigen */
+server.get("/userHome", function(req,res){
+    mongoClient.connect(dburl, function(err,db){
+        if (err) throw err;
+        
+        var allBooks = [];
+        db.collection("userdata").find({}).toArray(function(err,result){
+            if (err) throw err;
+            
+            result.forEach(function(data){
+               if(data.books){
+                   for (var i = 0; i<data.books.length;i++){
+                       data.books[i].user = data.user;
+                       allBooks.push(data.books[i]);
+                   }
+               }
+            });
+        res.send(allBooks);            
+        db.close();
+        });
+    });
+});
+
+/* Anfragen */
+server.post("/anfragen", function(req,res){
+   mongoClient.connect(dburl,function(err,db){
+        if (err) throw err;
+        
+        /* Anfragen anzeigen*/
+        if (req.body.show){
+           db.collection("userdata").find({user:req.body.show}).toArray(function(err,result){
+               if (err) throw err;
+               
+               res.send({"ownRequest": result[0].ownTradeRequest, "otherRequest": result[0].otherTradeRequest});
+           });           
+        }
+        
+        /* eigene Anfrage löschen */
+        if (req.body.ownAnfrage){
+            console.log(1,req.body)
+        }
+        
+        /* fremde Anfrage ablehnen */
+        if (req.body.otherAnfrage){
+            console.log(2,req.body)
+        }
+        
+        /* fremde Anfrage annehmen*/
+        if (req.body.accept){
+            console.log(3,req.body)
+        }
+    db.close();   
+   }); 
+});
 
 server.listen(PORT, () => console.log("roger, we are online...."));
