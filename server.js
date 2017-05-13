@@ -193,7 +193,7 @@ server.post("/userHome", function(req,res){
     if (req.body.from){
         mongoClient.connect(dburl, function(err,db){
             if (err) throw err;
-            console.log(req.body)
+            
             
             db.collection("userdata").update(
             {"user": req.body.from},
@@ -263,18 +263,97 @@ server.post("/anfragen", function(req,res){
         
         /* eigene Anfrage löschen */
         if (req.body.ownAnfrage){
-            console.log(1,req.body)
+            
+            /* beim User */
+            db.collection("userdata").update(
+            {user: req.body.user},
+            {
+                $pull:{
+                 "ownTradeRequest": {
+                     "book": req.body.ownAnfrage.book,
+                     "bookUser": req.body.ownAnfrage.bookUser
+                 }   
+                }
+            }
+            );
+            /* beim Buch besitzer */
+            db.collection("userdata").update(
+            {user: req.body.ownAnfrage.bookUser},
+            {
+                $pull:{
+                    "otherTradeRequest": {
+                        "book": req.body.ownAnfrage.book,
+                        "from": req.body.user
+                    }
+                }
+            }
+            )
+        res.send("done");
         }
         
         /* fremde Anfrage ablehnen */
         if (req.body.otherAnfrage){
-            console.log(2,req.body)
+         
+            /* beim User */
+            db.collection("userdata").update(
+            {user: req.body.user},
+            {
+                $pull:{
+                    "otherTradeRequest": {
+                        "book": req.body.otherAnfrage.book,
+                        "from": req.body.otherAnfrage.from
+                    }
+                }
+            }
+            );
+            
+            /* Beim Absender */
+            db.collection("userdata").update(
+            {user: req.body.otherAnfrage.from},
+            {
+                $pull:{
+                    "ownTradeRequest":{
+                        "book": req.body.otherAnfrage.book,
+                        "bookUser": req.body.user
+                    }
+                }
+            }
+            );
+        res.send("done");    
         }
         
-        /* fremde Anfrage annehmen*/
+        /* fremde Anfrage annehmen - nur Löschung Information übergabe nicht vorhanden*/
         if (req.body.accept){
-            console.log(3,req.body)
-        }
+            
+            /* Löschung beim User*/
+            db.collection("userdata").update(
+            {user: req.body.user},
+            {
+                $pull:{
+                    "otherTradeRequest": {
+                        "book": req.body.accept.book,
+                        "from": req.body.accept.from
+                    }
+                }
+            }
+            );
+            
+            /* Löschung beim Absender */
+            db.collection("userdata").update(
+            {user: req.body.accept.from},
+            {
+                $pull:{
+                    "ownTradeRequest":{
+                        "book": req.body.accept.book,
+                        "bookUser": req.body.user
+                    }
+                }
+            }
+            );
+            
+            // hier könnte die Information weitergabe rein
+        res.send("done");    
+        }    
     db.close();   
    }); 
 });

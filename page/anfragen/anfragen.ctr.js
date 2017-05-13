@@ -9,7 +9,7 @@ app.controller('anfragenController', function($scope, $http, $cookies, $route, $
     $scope.AnfrageEntscheidung = function(data){
         data.user = $cookies.get("user");
         $http.post("/anfragen",data).success(function(res){
-            console.log(res);
+            $route.reload();
         })
     }
     
