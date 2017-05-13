@@ -72,6 +72,22 @@ server.post("/setting", function(req,res){
     mongoClient.connect(dburl, function(err, db){
         if (err) throw err;
         
+        /* Profil Daten abrufen */
+        
+        if (req.body.profilDaten){
+            db.collection("userdata").find({"user": req.body.profilDaten}).toArray(function(err, result){
+                if (err) throw err;
+                
+                var profilDaten = {
+                    "fullname": result[0].fullName,
+                    "stadt": result[0].stadt,
+                    "bundesland": result[0].bundesland
+                    
+                }
+            res.send(profilDaten);    
+            })
+        }
+        
         /* Profil aktualisieren */        
         if (req.body.profil){
             if(req.body.profil.name){

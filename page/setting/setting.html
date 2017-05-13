@@ -12,11 +12,11 @@
 <div id="settingOptionBox">
     <h1>Profil aktualisieren</h1>
     <p>Vollständiger Name</p>
-    <input class="form-control" ng-model="profil.name" ng-keypress="profilUpdate(profil,$event)"/>
+    <input class="form-control" placeholder="{{userProfilData.fullname}}" ng-model="profil.name" ng-keypress="profilUpdate(profil,$event)"/>
     <p>Stadt</p>
-    <input class="form-control" ng-model="profil.stadt" ng-keypress="profilUpdate(profil,$event)"/>
+    <input class="form-control" placeholder="{{userProfilData.stadt}}" ng-model="profil.stadt" ng-keypress="profilUpdate(profil,$event)"/>
     <p>Bundesland</p>
-    <input class="form-control" ng-model="profil.bundesland" ng-keypress="profilUpdate(profil,$event)"/>
+    <input class="form-control" placeholder="{{userProfilData.bundesland}}" ng-model="profil.bundesland" ng-keypress="profilUpdate(profil,$event)"/>
     <button ng-click="profilUpdate(profil)">Save</button>
     <p>{{profilChange}}</p>
     

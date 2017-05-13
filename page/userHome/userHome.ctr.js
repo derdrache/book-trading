@@ -2,6 +2,7 @@ app.controller('userHomeController', function($scope, $http, $cookies, $route, $
     
     var user = $cookies.get("user");
     
+    $scope.userName= user;
     $scope.myBooks = true;
     $scope.allBooks = false;
     $scope.buchSuche = false;
