@@ -2,8 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 8080|| 5000;
 const mongoClient = require("mongodb").MongoClient;
-const dburl = "mongodb://webapps:webapps@ds157500.mlab.com:57500/webapps";
-const bing = require("node-bing-api")({ accKey: "1fc3f4c636b44449be7232e39f24e679" });
+const dotenv = require("dotenv").load();
+const dburl = process.env.DB_URL;
+const bing = require("node-bing-api")({ accKey: process.env.BING_KEY });
 
 
 const server = express()
